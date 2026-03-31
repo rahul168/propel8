@@ -1,0 +1,2061 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Propel8 — Technology consulting specializing in data platforms, analytics, and AI. Snowflake, Databricks, and open-source data stack experts." />
+  <title>Propel8 — Accelerate Your Data Future</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+       DESIGN TOKENS
+    ============================================================ */
+    :root {
+      --bg-primary: #080C14;
+      --bg-secondary: #0D1421;
+      --bg-card: #111827;
+      --accent-primary: #00E5C3;
+      --accent-secondary: #0EA5E9;
+      --text-primary: #F0F4FF;
+      --text-secondary: #8B9AB5;
+      --border-subtle: #1E2D45;
+      --gradient-hero: linear-gradient(135deg, #00E5C3 0%, #0EA5E9 100%);
+      --font-display: 'Syne', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --radius-pill: 999px;
+      --transition-base: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      --transition-reveal: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* ============================================================
+       RESET & BASE
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+    button { cursor: pointer; font-family: inherit; border: none; background: none; }
+
+    :focus-visible {
+      outline: 2px solid var(--accent-primary);
+      outline-offset: 3px;
+      border-radius: var(--radius-sm);
+    }
+
+    /* ============================================================
+       TYPOGRAPHY UTILITIES
+    ============================================================ */
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent-primary);
+      display: block;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-headline {
+      font-family: var(--font-display);
+      font-size: clamp(1.75rem, 3vw, 2.5rem);
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--text-primary);
+      margin-bottom: 1.25rem;
+    }
+
+    .gradient-text {
+      background: var(--gradient-hero);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ============================================================
+       LAYOUT UTILITIES
+    ============================================================ */
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    section { position: relative; }
+
+    /* ============================================================
+       SCROLL REVEAL
+    ============================================================ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity var(--transition-reveal), transform var(--transition-reveal);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+    .reveal-delay-5 { transition-delay: 0.5s; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+      * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+
+    /* ============================================================
+       NAVIGATION
+    ============================================================ */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 1.25rem 0;
+      transition: background var(--transition-base), border-color var(--transition-base), padding var(--transition-base);
+      border-bottom: 1px solid transparent;
+    }
+
+    .nav.scrolled {
+      background: rgba(8, 12, 20, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-color: var(--border-subtle);
+      padding: 0.875rem 0;
+    }
+
+    .nav__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+
+    .nav__logo {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      flex-shrink: 0;
+    }
+
+    .nav__logo span {
+      color: var(--accent-primary);
+    }
+
+    .nav__links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .nav__links a {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      transition: color var(--transition-base);
+      position: relative;
+    }
+
+    .nav__links a::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--gradient-hero);
+      border-radius: 2px;
+      transition: width var(--transition-base);
+    }
+
+    .nav__links a:hover,
+    .nav__links a.active {
+      color: var(--text-primary);
+    }
+
+    .nav__links a:hover::after,
+    .nav__links a.active::after {
+      width: 100%;
+    }
+
+    .nav__cta {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.6rem 1.25rem;
+      background: var(--gradient-hero);
+      color: #080C14;
+      font-size: 0.875rem;
+      font-weight: 600;
+      border-radius: var(--radius-pill);
+      transition: opacity var(--transition-base), transform var(--transition-base);
+      flex-shrink: 0;
+    }
+
+    .nav__cta:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    /* Hamburger */
+    .nav__hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      padding: 4px;
+      z-index: 1100;
+      position: relative;
+    }
+
+    .nav__hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--text-primary);
+      border-radius: 2px;
+      transition: transform var(--transition-base), opacity var(--transition-base);
+      transform-origin: center;
+    }
+
+    .nav__hamburger.open span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+    .nav__hamburger.open span:nth-child(2) {
+      opacity: 0;
+      transform: scaleX(0);
+    }
+    .nav__hamburger.open span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+
+    /* Mobile Overlay */
+    .nav__overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: var(--bg-primary);
+      z-index: 1050;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      opacity: 0;
+      transform: translateX(100%);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+    }
+
+    .nav__overlay.open {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .nav__overlay a {
+      font-family: var(--font-display);
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      transition: color var(--transition-base);
+    }
+
+    .nav__overlay a:hover { color: var(--accent-primary); }
+
+    .nav__overlay .nav__cta {
+      font-size: 1rem;
+      padding: 0.75rem 2rem;
+      margin-top: 1rem;
+    }
+
+    @media (max-width: 768px) {
+      .nav__links { display: none; }
+      .nav__cta.desktop-cta { display: none; }
+      .nav__hamburger { display: flex; }
+      .nav__overlay { display: flex; }
+    }
+
+    /* ============================================================
+       HERO SECTION
+    ============================================================ */
+    #hero {
+      min-height: 100svh;
+      display: flex;
+      align-items: center;
+      padding: 7rem 0 4rem;
+      background-color: var(--bg-primary);
+      overflow: hidden;
+    }
+
+    .hero__bg {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .hero__glow {
+      position: absolute;
+      top: -10%;
+      left: -5%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(0, 229, 195, 0.08) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .hero__dotgrid {
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(139, 154, 181, 0.15) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+
+    .hero__inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 3rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero__content { max-width: 560px; }
+
+    .hero__eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      color: var(--accent-primary);
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      padding: 0.35rem 0.75rem;
+      border: 1px solid rgba(0, 229, 195, 0.25);
+      border-radius: var(--radius-pill);
+      background: rgba(0, 229, 195, 0.05);
+    }
+
+    .hero__eyebrow::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--accent-primary);
+      border-radius: 50%;
+      animation: blink 2s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .hero__headline {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero__subheadline {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+      max-width: 480px;
+    }
+
+    .hero__actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.8rem 1.75rem;
+      background: var(--gradient-hero);
+      color: #080C14;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border-radius: var(--radius-pill);
+      transition: transform var(--transition-base), box-shadow var(--transition-base);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 229, 195, 0.35);
+    }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.8rem 1.75rem;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-primary);
+      font-weight: 600;
+      font-size: 0.95rem;
+      border-radius: var(--radius-pill);
+      transition: border-color var(--transition-base), background var(--transition-base), transform var(--transition-base);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--accent-primary);
+      background: rgba(0, 229, 195, 0.05);
+      transform: translateY(-2px);
+    }
+
+    /* Hero SVG */
+    .hero__visual {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .hero__svg-wrap {
+      width: 100%;
+      max-width: 520px;
+      aspect-ratio: 1;
+      position: relative;
+    }
+
+    .hero__svg-wrap svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    .svg-node {
+      animation: nodepulse 3s ease-in-out infinite;
+    }
+    .svg-node:nth-child(1)  { animation-delay: 0s; }
+    .svg-node:nth-child(2)  { animation-delay: 0.3s; }
+    .svg-node:nth-child(3)  { animation-delay: 0.6s; }
+    .svg-node:nth-child(4)  { animation-delay: 0.9s; }
+    .svg-node:nth-child(5)  { animation-delay: 1.2s; }
+    .svg-node:nth-child(6)  { animation-delay: 1.5s; }
+    .svg-node:nth-child(7)  { animation-delay: 1.8s; }
+    .svg-node:nth-child(8)  { animation-delay: 2.1s; }
+    .svg-node:nth-child(9)  { animation-delay: 2.4s; }
+    .svg-node:nth-child(10) { animation-delay: 2.7s; }
+
+    @keyframes nodeplus {
+      0%, 100% { opacity: 0.4; transform: scale(1); }
+      50%       { opacity: 1;   transform: scale(1.15); }
+    }
+
+    @keyframes nodeplus {
+      0%, 100% { opacity: 0.4; r: 6; }
+      50%       { opacity: 1;   r: 8; }
+    }
+
+    @keyframes nodepulse {
+      0%, 100% { opacity: 0.35; }
+      50%       { opacity: 1; }
+    }
+
+    .svg-node circle {
+      animation: nodepulse 3s ease-in-out infinite;
+    }
+
+    .svg-flow-line {
+      stroke-dasharray: 120;
+      stroke-dashoffset: 120;
+      animation: flowline 3s linear infinite;
+    }
+
+    .svg-flow-line:nth-child(odd)  { animation-delay: 0s; }
+    .svg-flow-line:nth-child(even) { animation-delay: 1.5s; }
+
+    @keyframes flowline {
+      0%   { stroke-dashoffset: 120; opacity: 0.2; }
+      50%  { opacity: 0.8; }
+      100% { stroke-dashoffset: -120; opacity: 0.2; }
+    }
+
+    .svg-static-line {
+      opacity: 0.15;
+    }
+
+    /* Floating orbit ring */
+    .svg-orbit {
+      animation: orbitSpin 20s linear infinite;
+      transform-origin: 250px 250px;
+    }
+
+    @keyframes orbitSpin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    /* Hero animation on load */
+    .hero__content > * {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .hero__eyebrow   { animation-delay: 0.1s; }
+    .hero__headline  { animation-delay: 0.25s; }
+    .hero__subheadline { animation-delay: 0.4s; }
+    .hero__actions   { animation-delay: 0.55s; }
+
+    .hero__visual {
+      opacity: 0;
+      animation: fadeIn 1s ease 0.3s forwards;
+    }
+
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    @media (max-width: 900px) {
+      .hero__inner {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      .hero__content { max-width: 100%; }
+      .hero__subheadline { max-width: 100%; }
+      .hero__actions { justify-content: center; }
+      .hero__visual { order: -1; max-width: 360px; margin: 0 auto; }
+    }
+
+    @media (max-width: 640px) {
+      #hero { padding: 6rem 0 3rem; }
+      .hero__visual { max-width: 280px; }
+    }
+
+    /* ============================================================
+       ANGLED DIVIDER
+    ============================================================ */
+    .angled-divider {
+      height: 80px;
+      background: var(--bg-secondary);
+      clip-path: polygon(0 0, 100% 30%, 100% 100%, 0 100%);
+      margin-top: -1px;
+    }
+
+    .angled-divider--reverse {
+      clip-path: polygon(0 30%, 100% 0, 100% 100%, 0 100%);
+    }
+
+    /* ============================================================
+       TRUST BAR
+    ============================================================ */
+    #trust {
+      background: var(--bg-secondary);
+      padding: 3rem 0;
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .trust__label {
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+    }
+
+    .trust__badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: center;
+    }
+
+    .trust__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      padding: 0.4rem 0.875rem;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-pill);
+      background: rgba(17, 24, 39, 0.6);
+      transition: color var(--transition-base), border-color var(--transition-base);
+    }
+
+    .trust__badge:hover {
+      color: var(--accent-primary);
+      border-color: rgba(0, 229, 195, 0.4);
+    }
+
+    .trust__badge .badge-icon {
+      font-size: 0.9rem;
+    }
+
+    /* ============================================================
+       SERVICES SECTION
+    ============================================================ */
+    #services {
+      padding: 6rem 0;
+      background: var(--bg-primary);
+    }
+
+    .services__header {
+      margin-bottom: 3rem;
+    }
+
+    .services__grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .service-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
+    }
+
+    .service-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0, 229, 195, 0.12);
+      border-color: rgba(0, 229, 195, 0.3);
+    }
+
+    .service-card__icon {
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 229, 195, 0.08);
+      border: 1px solid rgba(0, 229, 195, 0.2);
+      border-radius: var(--radius-sm);
+      font-size: 1.25rem;
+      color: var(--accent-primary);
+      flex-shrink: 0;
+    }
+
+    .service-card__title {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .service-card__desc {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      flex: 1;
+    }
+
+    .service-card__link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent-primary);
+      transition: gap var(--transition-base);
+      margin-top: auto;
+      padding-top: 0.5rem;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .service-card__link:hover { gap: 0.6rem; }
+
+    /* ============================================================
+       PLATFORM SPOTLIGHT
+    ============================================================ */
+    #platforms {
+      padding: 6rem 0;
+      background: var(--bg-secondary);
+    }
+
+    .platforms__header { margin-bottom: 3rem; }
+
+    .platforms__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .platform-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .platform-panel::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--gradient-hero);
+    }
+
+    .platform-panel__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      color: var(--accent-primary);
+      padding: 0.3rem 0.75rem;
+      border: 1px solid rgba(0, 229, 195, 0.3);
+      border-radius: var(--radius-pill);
+      background: rgba(0, 229, 195, 0.05);
+      margin-bottom: 1.25rem;
+    }
+
+    .platform-panel__badge::before {
+      content: '✦';
+      font-size: 0.6rem;
+    }
+
+    .platform-panel__title {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+    }
+
+    .platform-panel__body {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+
+    .platform-panel__features {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .platform-panel__feature {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
+    .platform-panel__feature::before {
+      content: '✓';
+      color: var(--accent-primary);
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 0.05em;
+    }
+
+    @media (max-width: 768px) {
+      .platforms__grid { grid-template-columns: 1fr; }
+    }
+
+    /* ============================================================
+       OPEN SOURCE SECTION
+    ============================================================ */
+    #opensource {
+      padding: 6rem 0;
+      background: var(--bg-primary);
+    }
+
+    .opensource__header { margin-bottom: 1rem; }
+    .opensource__intro {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      max-width: 640px;
+      line-height: 1.7;
+      margin-bottom: 3rem;
+    }
+
+    .opensource__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+
+    .oss-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      transition: border-color var(--transition-base), transform var(--transition-base);
+    }
+
+    .oss-card:hover {
+      border-color: rgba(14, 165, 233, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .oss-card__category {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-secondary);
+      margin-bottom: 0.75rem;
+      padding: 0.2rem 0.5rem;
+      background: rgba(14, 165, 233, 0.08);
+      border-radius: var(--radius-sm);
+      display: inline-block;
+    }
+
+    .oss-card__title {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .oss-card__tools {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    @media (max-width: 1024px) {
+      .opensource__grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 640px) {
+      .opensource__grid { grid-template-columns: 1fr; }
+    }
+
+    /* ============================================================
+       STATS BAR
+    ============================================================ */
+    #stats {
+      padding: 4rem 0;
+      background: var(--bg-secondary);
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .stats__grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      text-align: center;
+    }
+
+    .stat-item__number {
+      font-family: var(--font-display);
+      font-size: clamp(2.25rem, 4vw, 3.25rem);
+      font-weight: 800;
+      background: var(--gradient-hero);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .stat-item__label {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    @media (max-width: 768px) {
+      .stats__grid { grid-template-columns: repeat(2, 1fr); gap: 2rem 1.5rem; }
+    }
+
+    /* ============================================================
+       WHY PROPEL8
+    ============================================================ */
+    #why {
+      padding: 6rem 0;
+      background: var(--bg-primary);
+    }
+
+    .why__header { margin-bottom: 3rem; }
+
+    .why__grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+
+    .why-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 2rem;
+      transition: border-color var(--transition-base), transform var(--transition-base);
+    }
+
+    .why-card:hover {
+      border-color: rgba(0, 229, 195, 0.25);
+      transform: translateY(-2px);
+    }
+
+    .why-card__number {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--accent-primary);
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+      opacity: 0.7;
+    }
+
+    .why-card__title {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.75rem;
+    }
+
+    .why-card__desc {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+
+    @media (max-width: 640px) {
+      .why__grid { grid-template-columns: 1fr; }
+    }
+
+    /* ============================================================
+       PROCESS TIMELINE
+    ============================================================ */
+    #process {
+      padding: 6rem 0;
+      background: var(--bg-secondary);
+    }
+
+    .process__header { margin-bottom: 3.5rem; }
+
+    .process__timeline {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      position: relative;
+    }
+
+    .process__timeline::before {
+      content: '';
+      position: absolute;
+      top: 28px;
+      left: calc(12.5% + 10px);
+      right: calc(12.5% + 10px);
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+      opacity: 0.4;
+    }
+
+    .process-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 0 1.25rem;
+      position: relative;
+    }
+
+    .process-step__number {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 800;
+      background: var(--bg-card);
+      border: 2px solid var(--border-subtle);
+      color: var(--accent-primary);
+      margin-bottom: 1.25rem;
+      position: relative;
+      z-index: 1;
+      transition: border-color var(--transition-base), box-shadow var(--transition-base);
+    }
+
+    .process-step:hover .process-step__number {
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 16px rgba(0, 229, 195, 0.3);
+    }
+
+    .process-step__title {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .process-step__desc {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    @media (max-width: 768px) {
+      .process__timeline {
+        grid-template-columns: 1fr 1fr;
+        gap: 2.5rem;
+      }
+      .process__timeline::before { display: none; }
+    }
+
+    @media (max-width: 480px) {
+      .process__timeline { grid-template-columns: 1fr; }
+      .process-step { align-items: flex-start; text-align: left; flex-direction: row; gap: 1rem; }
+      .process-step__number { flex-shrink: 0; margin-bottom: 0; }
+    }
+
+    /* ============================================================
+       CTA / CONTACT SECTION
+    ============================================================ */
+    #contact {
+      padding: 7rem 0;
+      background: var(--bg-primary);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact__bg-glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(0, 229, 195, 0.06) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .contact__dotgrid {
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(139, 154, 181, 0.12) 1px, transparent 1px);
+      background-size: 20px 20px;
+      pointer-events: none;
+    }
+
+    .contact__inner {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    .contact__headline {
+      font-family: var(--font-display);
+      font-size: clamp(1.75rem, 3vw, 2.5rem);
+      font-weight: 800;
+      line-height: 1.15;
+      color: var(--text-primary);
+      margin-bottom: 1.25rem;
+    }
+
+    .contact__subheadline {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+    }
+
+    .contact__alternatives {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .contact__alt {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      transition: color var(--transition-base);
+    }
+
+    .contact__alt:hover { color: var(--accent-primary); }
+
+    .contact__alt-icon {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    /* Contact Form */
+    .contact__form {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 2.5rem;
+    }
+
+    .form__group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form__label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 0.4rem;
+      letter-spacing: 0.03em;
+    }
+
+    .form__input,
+    .form__textarea {
+      width: 100%;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 0.7rem 1rem;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      color: var(--text-primary);
+      transition: border-color var(--transition-base), box-shadow var(--transition-base);
+      -webkit-appearance: none;
+    }
+
+    .form__input::placeholder,
+    .form__textarea::placeholder {
+      color: rgba(139, 154, 181, 0.5);
+    }
+
+    .form__input:focus,
+    .form__textarea:focus {
+      outline: none;
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 0 3px rgba(0, 229, 195, 0.12);
+    }
+
+    .form__textarea { resize: vertical; min-height: 100px; }
+
+    .form__row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .btn-form-submit {
+      width: 100%;
+      padding: 0.875rem;
+      background: var(--gradient-hero);
+      color: #080C14;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 700;
+      border-radius: var(--radius-pill);
+      border: none;
+      cursor: pointer;
+      transition: opacity var(--transition-base), transform var(--transition-base), box-shadow var(--transition-base);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+    }
+
+    .btn-form-submit:hover {
+      opacity: 0.92;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(0, 229, 195, 0.3);
+    }
+
+    @media (max-width: 900px) {
+      .contact__inner { grid-template-columns: 1fr; gap: 3rem; }
+    }
+
+    @media (max-width: 480px) {
+      .form__row { grid-template-columns: 1fr; }
+      .contact__form { padding: 1.75rem; }
+    }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    footer {
+      background: var(--bg-primary);
+      border-top: 1px solid var(--border-subtle);
+      padding: 4rem 0 2rem;
+    }
+
+    .footer__top {
+      display: grid;
+      grid-template-columns: 1.5fr repeat(4, 1fr);
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+
+    .footer__brand__logo {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .footer__brand__logo span { color: var(--accent-primary); }
+
+    .footer__brand__tagline {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .footer__col__title {
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+      letter-spacing: 0.02em;
+    }
+
+    .footer__col__links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .footer__col__links a {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      transition: color var(--transition-base);
+    }
+
+    .footer__col__links a:hover { color: var(--accent-primary); }
+
+    .footer__bottom {
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .footer__copyright {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    .footer__legal {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .footer__legal a {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      transition: color var(--transition-base);
+    }
+
+    .footer__legal a:hover { color: var(--text-primary); }
+
+    @media (max-width: 1024px) {
+      .footer__top { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      .footer__top { grid-template-columns: 1fr 1fr; gap: 2rem; }
+      .footer__brand { grid-column: 1 / -1; }
+    }
+
+    @media (max-width: 400px) {
+      .footer__top { grid-template-columns: 1fr; }
+      .footer__bottom { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       NAVIGATION
+  ============================================================ -->
+  <nav class="nav" id="main-nav" aria-label="Main navigation">
+    <div class="container">
+      <div class="nav__inner">
+        <a href="#hero" class="nav__logo" aria-label="Propel8 home">Propel<span>8</span></a>
+
+        <ul class="nav__links" role="list">
+          <li><a href="#services">Services</a></li>
+          <li><a href="#platforms">Platforms</a></li>
+          <li><a href="#opensource">Solutions</a></li>
+          <li><a href="#why">About</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+
+        <a href="#contact" class="nav__cta desktop-cta" aria-label="Start a conversation">Start a Conversation</a>
+
+        <button class="nav__hamburger" id="hamburger" aria-label="Open navigation menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Nav Overlay -->
+  <div class="nav__overlay" id="nav-overlay" role="dialog" aria-modal="true" aria-label="Navigation menu">
+    <a href="#services" class="overlay-link">Services</a>
+    <a href="#platforms" class="overlay-link">Platforms</a>
+    <a href="#opensource" class="overlay-link">Solutions</a>
+    <a href="#why" class="overlay-link">About</a>
+    <a href="#contact" class="overlay-link">Contact</a>
+    <a href="#contact" class="nav__cta">Start a Conversation</a>
+  </div>
+
+  <main>
+
+    <!-- ============================================================
+         HERO
+    ============================================================ -->
+    <section id="hero" aria-label="Hero">
+      <div class="hero__bg">
+        <div class="hero__glow"></div>
+        <div class="hero__dotgrid"></div>
+      </div>
+
+      <div class="container">
+        <div class="hero__inner">
+          <div class="hero__content">
+            <span class="hero__eyebrow">Data &amp; AI Consulting</span>
+
+            <h1 class="hero__headline">
+              Accelerate Your<br>
+              <span class="gradient-text">Data Future</span>
+            </h1>
+
+            <p class="hero__subheadline">
+              Propel8 partners with ambitious organizations to design, build, and scale modern data
+              platforms — from Snowflake and Databricks implementations to cost-efficient open-source
+              pipelines that deliver real AI-ready infrastructure.
+            </p>
+
+            <div class="hero__actions">
+              <a href="#services" class="btn-primary">Explore Our Services</a>
+              <a href="#platforms" class="btn-outline">View Case Studies</a>
+            </div>
+          </div>
+
+          <div class="hero__visual" aria-hidden="true">
+            <div class="hero__svg-wrap">
+              <!-- Animated Data Flow SVG -->
+              <svg viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Animated data flow diagram">
+
+                <!-- Orbit rings -->
+                <circle cx="250" cy="250" r="180" stroke="#1E2D45" stroke-width="1" opacity="0.5"/>
+                <circle cx="250" cy="250" r="120" stroke="#1E2D45" stroke-width="1" opacity="0.4"/>
+                <circle cx="250" cy="250" r="60" stroke="#1E2D45" stroke-width="1" opacity="0.3"/>
+
+                <!-- Rotating orbit element -->
+                <g class="svg-orbit">
+                  <circle cx="430" cy="250" r="5" fill="#00E5C3" opacity="0.6"/>
+                </g>
+
+                <!-- Static connection lines -->
+                <line x1="250" y1="70" x2="380" y2="155" stroke="#1E2D45" stroke-width="1.5" class="svg-static-line"/>
+                <line x1="380" y1="155" x2="430" y2="300" stroke="#1E2D45" stroke-width="1.5" class="svg-static-line"/>
+                <line x1="430" y1="300" x2="320" y2="420" stroke="#1E2D45" stroke-width="1.5" class="svg-static-line"/>
+                <line x1="320" y1="420" x2="180" y2="420" stroke="#1E2D45" stroke-width="1.5" class="svg-static-line"/>
+                <line x1="180" y1="420" x2="70" y2="300" stroke="#1E2D45" stroke-width="1.5" class="svg-static-line"/>
+                <line x1="70" y1="300" x2="120" y2="155" stroke="#1E2D45" stroke-width="1.5" class="svg-static-line"/>
+                <line x1="120" y1="155" x2="250" y2="70" stroke="#1E2D45" stroke-width="1.5" class="svg-static-line"/>
+                <!-- Cross connections -->
+                <line x1="250" y1="70" x2="430" y2="300" stroke="#1E2D45" stroke-width="1" class="svg-static-line"/>
+                <line x1="380" y1="155" x2="180" y2="420" stroke="#1E2D45" stroke-width="1" class="svg-static-line"/>
+                <line x1="120" y1="155" x2="320" y2="420" stroke="#1E2D45" stroke-width="1" class="svg-static-line"/>
+                <line x1="70" y1="300" x2="430" y2="300" stroke="#1E2D45" stroke-width="1" class="svg-static-line"/>
+                <!-- Inner connections -->
+                <line x1="250" y1="190" x2="310" y2="250" stroke="#1E2D45" stroke-width="1" class="svg-static-line"/>
+                <line x1="310" y1="250" x2="250" y2="310" stroke="#1E2D45" stroke-width="1" class="svg-static-line"/>
+                <line x1="250" y1="310" x2="190" y2="250" stroke="#1E2D45" stroke-width="1" class="svg-static-line"/>
+                <line x1="190" y1="250" x2="250" y2="190" stroke="#1E2D45" stroke-width="1" class="svg-static-line"/>
+
+                <!-- Animated flow lines (teal) -->
+                <line x1="250" y1="70" x2="380" y2="155" stroke="#00E5C3" stroke-width="2" class="svg-flow-line"/>
+                <line x1="430" y1="300" x2="320" y2="420" stroke="#0EA5E9" stroke-width="2" class="svg-flow-line"/>
+                <line x1="70" y1="300" x2="120" y2="155" stroke="#00E5C3" stroke-width="2" class="svg-flow-line"/>
+                <line x1="250" y1="190" x2="310" y2="250" stroke="#0EA5E9" stroke-width="1.5" class="svg-flow-line"/>
+                <line x1="250" y1="310" x2="190" y2="250" stroke="#00E5C3" stroke-width="1.5" class="svg-flow-line"/>
+                <line x1="380" y1="155" x2="180" y2="420" stroke="#0EA5E9" stroke-width="1.5" class="svg-flow-line"/>
+
+                <!-- Outer nodes -->
+                <g class="svg-node" style="animation-delay:0s">
+                  <circle cx="250" cy="70" r="10" fill="#080C14" stroke="#00E5C3" stroke-width="2"/>
+                  <circle cx="250" cy="70" r="4" fill="#00E5C3"/>
+                </g>
+                <g class="svg-node" style="animation-delay:0.3s">
+                  <circle cx="380" cy="155" r="10" fill="#080C14" stroke="#0EA5E9" stroke-width="2"/>
+                  <circle cx="380" cy="155" r="4" fill="#0EA5E9"/>
+                </g>
+                <g class="svg-node" style="animation-delay:0.6s">
+                  <circle cx="430" cy="300" r="10" fill="#080C14" stroke="#00E5C3" stroke-width="2"/>
+                  <circle cx="430" cy="300" r="4" fill="#00E5C3"/>
+                </g>
+                <g class="svg-node" style="animation-delay:0.9s">
+                  <circle cx="320" cy="420" r="10" fill="#080C14" stroke="#0EA5E9" stroke-width="2"/>
+                  <circle cx="320" cy="420" r="4" fill="#0EA5E9"/>
+                </g>
+                <g class="svg-node" style="animation-delay:1.2s">
+                  <circle cx="180" cy="420" r="10" fill="#080C14" stroke="#00E5C3" stroke-width="2"/>
+                  <circle cx="180" cy="420" r="4" fill="#00E5C3"/>
+                </g>
+                <g class="svg-node" style="animation-delay:1.5s">
+                  <circle cx="70" cy="300" r="10" fill="#080C14" stroke="#0EA5E9" stroke-width="2"/>
+                  <circle cx="70" cy="300" r="4" fill="#0EA5E9"/>
+                </g>
+                <g class="svg-node" style="animation-delay:1.8s">
+                  <circle cx="120" cy="155" r="10" fill="#080C14" stroke="#00E5C3" stroke-width="2"/>
+                  <circle cx="120" cy="155" r="4" fill="#00E5C3"/>
+                </g>
+
+                <!-- Inner nodes -->
+                <g class="svg-node" style="animation-delay:2.1s">
+                  <circle cx="250" cy="190" r="8" fill="#080C14" stroke="#00E5C3" stroke-width="1.5"/>
+                  <circle cx="250" cy="190" r="3" fill="#00E5C3"/>
+                </g>
+                <g class="svg-node" style="animation-delay:2.4s">
+                  <circle cx="310" cy="250" r="8" fill="#080C14" stroke="#0EA5E9" stroke-width="1.5"/>
+                  <circle cx="310" cy="250" r="3" fill="#0EA5E9"/>
+                </g>
+                <g class="svg-node" style="animation-delay:2.7s">
+                  <circle cx="250" cy="310" r="8" fill="#080C14" stroke="#00E5C3" stroke-width="1.5"/>
+                  <circle cx="250" cy="310" r="3" fill="#00E5C3"/>
+                </g>
+                <g class="svg-node" style="animation-delay:0.15s">
+                  <circle cx="190" cy="250" r="8" fill="#080C14" stroke="#0EA5E9" stroke-width="1.5"/>
+                  <circle cx="190" cy="250" r="3" fill="#0EA5E9"/>
+                </g>
+
+                <!-- Center node (larger) -->
+                <g class="svg-node" style="animation-delay:0.45s">
+                  <circle cx="250" cy="250" r="18" fill="#080C14" stroke="#00E5C3" stroke-width="2.5"/>
+                  <circle cx="250" cy="250" r="8" fill="none" stroke="#00E5C3" stroke-width="1" opacity="0.5"/>
+                  <circle cx="250" cy="250" r="5" fill="#00E5C3"/>
+                </g>
+
+                <!-- Glow pulse around center -->
+                <circle cx="250" cy="250" r="24" fill="none" stroke="#00E5C3" stroke-width="1" opacity="0.15">
+                  <animate attributeName="r" values="18;30;18" dur="3s" repeatCount="indefinite"/>
+                  <animate attributeName="opacity" values="0.3;0;0.3" dur="3s" repeatCount="indefinite"/>
+                </circle>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         TRUST BAR
+    ============================================================ -->
+    <section id="trust" aria-label="Technologies we implement">
+      <div class="container">
+        <p class="trust__label reveal">Trusted technologies we implement</p>
+        <div class="trust__badges reveal reveal-delay-1">
+          <span class="trust__badge"><span class="badge-icon">❄</span>Snowflake</span>
+          <span class="trust__badge"><span class="badge-icon">⚡</span>Databricks</span>
+          <span class="trust__badge"><span class="badge-icon">⟁</span>dbt</span>
+          <span class="trust__badge"><span class="badge-icon">◎</span>Apache Airflow</span>
+          <span class="trust__badge"><span class="badge-icon">◈</span>Apache Iceberg</span>
+          <span class="trust__badge"><span class="badge-icon">⬡</span>DuckDB</span>
+          <span class="trust__badge"><span class="badge-icon">∿</span>Kafka</span>
+          <span class="trust__badge"><span class="badge-icon">✦</span>Spark</span>
+          <span class="trust__badge"><span class="badge-icon">△</span>Python</span>
+          <span class="trust__badge"><span class="badge-icon">⊕</span>Terraform</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SERVICES
+    ============================================================ -->
+    <section id="services" aria-labelledby="services-headline">
+      <div class="container">
+        <div class="services__header">
+          <span class="section-label reveal">What We Do</span>
+          <h2 class="section-headline reveal reveal-delay-1" id="services-headline">End-to-End Data &amp; AI Expertise</h2>
+        </div>
+
+        <div class="services__grid">
+          <article class="service-card reveal">
+            <div class="service-card__icon" aria-hidden="true">◈</div>
+            <h3 class="service-card__title">Data Platform Modernization</h3>
+            <p class="service-card__desc">Architect and migrate to cloud-native data platforms. We specialize in Snowflake and Databricks implementations that scale with your business and cut infrastructure costs.</p>
+            <a href="#contact" class="service-card__link" aria-label="Learn more about Data Platform Modernization">Learn more →</a>
+          </article>
+
+          <article class="service-card reveal reveal-delay-1">
+            <div class="service-card__icon" aria-hidden="true">⟁</div>
+            <h3 class="service-card__title">Open-Source Data Pipelines</h3>
+            <p class="service-card__desc">Build cost-efficient, production-grade data pipelines using best-in-class open-source tools — dbt, Airflow, Kafka, Iceberg, and DuckDB — without enterprise licensing overhead.</p>
+            <a href="#contact" class="service-card__link" aria-label="Learn more about Open-Source Data Pipelines">Learn more →</a>
+          </article>
+
+          <article class="service-card reveal reveal-delay-2">
+            <div class="service-card__icon" aria-hidden="true">⬡</div>
+            <h3 class="service-card__title">AI &amp; ML Enablement</h3>
+            <p class="service-card__desc">Transform your data platform into an AI-ready foundation. From feature stores and model serving to LLM integration and RAG architectures, we make AI practical.</p>
+            <a href="#contact" class="service-card__link" aria-label="Learn more about AI and ML Enablement">Learn more →</a>
+          </article>
+
+          <article class="service-card reveal">
+            <div class="service-card__icon" aria-hidden="true">◇</div>
+            <h3 class="service-card__title">Analytics Engineering</h3>
+            <p class="service-card__desc">Design semantic layers, data models, and self-service BI that give business teams trusted, governed access to insights without bottlenecking your data engineers.</p>
+            <a href="#contact" class="service-card__link" aria-label="Learn more about Analytics Engineering">Learn more →</a>
+          </article>
+
+          <article class="service-card reveal reveal-delay-1">
+            <div class="service-card__icon" aria-hidden="true">△</div>
+            <h3 class="service-card__title">Data Strategy &amp; Architecture</h3>
+            <p class="service-card__desc">Cut through the noise. We assess your current state, map your goals, and deliver a pragmatic roadmap — buy vs. build decisions, platform selection, and migration planning.</p>
+            <a href="#contact" class="service-card__link" aria-label="Learn more about Data Strategy and Architecture">Learn more →</a>
+          </article>
+
+          <article class="service-card reveal reveal-delay-2">
+            <div class="service-card__icon" aria-hidden="true">⊕</div>
+            <h3 class="service-card__title">DataOps &amp; Platform Engineering</h3>
+            <p class="service-card__desc">Bring DevOps discipline to your data stack. CI/CD for dbt, infrastructure-as-code with Terraform, observability with Monte Carlo or Great Expectations, and automated testing.</p>
+            <a href="#contact" class="service-card__link" aria-label="Learn more about DataOps and Platform Engineering">Learn more →</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         PLATFORM SPOTLIGHT
+    ============================================================ -->
+    <section id="platforms" aria-labelledby="platforms-headline">
+      <div class="container">
+        <div class="platforms__header">
+          <span class="section-label reveal">Platform Expertise</span>
+          <h2 class="section-headline reveal reveal-delay-1" id="platforms-headline">Deep Expertise in the Platforms That Matter</h2>
+        </div>
+
+        <div class="platforms__grid">
+          <article class="platform-panel reveal">
+            <div class="platform-panel__badge">SNOWFLAKE PARTNER</div>
+            <h3 class="platform-panel__title">The Data Cloud, Fully Realized</h3>
+            <p class="platform-panel__body">
+              From initial setup and data migration to performance tuning, cost governance, and Snowpark-based
+              ML — we've delivered Snowflake implementations across retail, finance, and healthcare that reduced
+              query costs by up to 60% and onboarding time for new data products from weeks to days.
+            </p>
+            <ul class="platform-panel__features" aria-label="Snowflake capabilities">
+              <li class="platform-panel__feature">Zero-copy cloning &amp; time travel for dev/test</li>
+              <li class="platform-panel__feature">Dynamic Data Masking &amp; column-level security</li>
+              <li class="platform-panel__feature">Snowpark ML and Python UDFs</li>
+              <li class="platform-panel__feature">Cost monitoring with resource monitors &amp; query tagging</li>
+              <li class="platform-panel__feature">Data sharing and Marketplace integration</li>
+            </ul>
+          </article>
+
+          <article class="platform-panel reveal reveal-delay-2">
+            <div class="platform-panel__badge">DATABRICKS PARTNER</div>
+            <h3 class="platform-panel__title">Unified Analytics at Lakehouse Scale</h3>
+            <p class="platform-panel__body">
+              We architect Unity Catalog governance layers, build Delta Lake pipelines, and operationalize
+              ML workflows with MLflow — turning Databricks from a raw tool into a governed, production-grade
+              lakehouse that your whole organization trusts.
+            </p>
+            <ul class="platform-panel__features" aria-label="Databricks capabilities">
+              <li class="platform-panel__feature">Unity Catalog for fine-grained data governance</li>
+              <li class="platform-panel__feature">Delta Live Tables for declarative pipeline engineering</li>
+              <li class="platform-panel__feature">MLflow experiment tracking and model registry</li>
+              <li class="platform-panel__feature">Photon-accelerated query optimization</li>
+              <li class="platform-panel__feature">Structured Streaming for real-time use cases</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         OPEN SOURCE SOLUTIONS
+    ============================================================ -->
+    <section id="opensource" aria-labelledby="opensource-headline">
+      <div class="container">
+        <div class="opensource__header">
+          <span class="section-label reveal">Cost-Efficient by Design</span>
+          <h2 class="section-headline reveal reveal-delay-1" id="opensource-headline">Enterprise Power. Open-Source Economics.</h2>
+        </div>
+        <p class="opensource__intro reveal reveal-delay-2">
+          Not every problem requires an expensive SaaS license. Propel8 designs and builds
+          production-grade data infrastructure using the modern open-source data stack — giving you
+          full control, no vendor lock-in, and dramatically lower total cost of ownership.
+        </p>
+
+        <div class="opensource__grid">
+          <article class="oss-card reveal">
+            <div class="oss-card__category">Ingestion &amp; Integration</div>
+            <h3 class="oss-card__title">Data Ingestion</h3>
+            <p class="oss-card__tools">Apache Kafka · Airbyte · Singer · Fivetran alternatives</p>
+          </article>
+
+          <article class="oss-card reveal reveal-delay-1">
+            <div class="oss-card__category">Transformation &amp; Modeling</div>
+            <h3 class="oss-card__title">Data Transformation</h3>
+            <p class="oss-card__tools">dbt Core · SQLMesh · data contracts</p>
+          </article>
+
+          <article class="oss-card reveal reveal-delay-2">
+            <div class="oss-card__category">Storage &amp; Query</div>
+            <h3 class="oss-card__title">Data Storage</h3>
+            <p class="oss-card__tools">Apache Iceberg · Delta Lake · DuckDB · Trino</p>
+          </article>
+
+          <article class="oss-card reveal reveal-delay-1">
+            <div class="oss-card__category">Orchestration</div>
+            <h3 class="oss-card__title">Pipeline Orchestration</h3>
+            <p class="oss-card__tools">Apache Airflow · Prefect · Dagster</p>
+          </article>
+
+          <article class="oss-card reveal reveal-delay-2">
+            <div class="oss-card__category">Observability</div>
+            <h3 class="oss-card__title">Data Quality &amp; Observability</h3>
+            <p class="oss-card__tools">Great Expectations · Elementary · OpenMetadata</p>
+          </article>
+
+          <article class="oss-card reveal reveal-delay-3">
+            <div class="oss-card__category">Compute</div>
+            <h3 class="oss-card__title">Distributed Compute</h3>
+            <p class="oss-card__tools">Apache Spark · Ray · Dask</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         STATS BAR
+    ============================================================ -->
+    <section id="stats" aria-label="Company statistics">
+      <div class="container">
+        <div class="stats__grid">
+          <div class="stat-item reveal">
+            <span class="stat-item__number" data-target="50" data-suffix="+">0</span>
+            <span class="stat-item__label">Data Platform Implementations</span>
+          </div>
+          <div class="stat-item reveal reveal-delay-1">
+            <span class="stat-item__number" data-target="4" data-prefix="$" data-suffix="M+">0</span>
+            <span class="stat-item__label">Client Infrastructure Savings Delivered</span>
+          </div>
+          <div class="stat-item reveal reveal-delay-2">
+            <span class="stat-item__number" data-target="12">0</span>
+            <span class="stat-item__label">Open-Source Tools in Our Production Stack</span>
+          </div>
+          <div class="stat-item reveal reveal-delay-3">
+            <span class="stat-item__number" data-target="100" data-suffix="%">0</span>
+            <span class="stat-item__label">Projects Delivered On Scope</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         WHY PROPEL8
+    ============================================================ -->
+    <section id="why" aria-labelledby="why-headline">
+      <div class="container">
+        <div class="why__header">
+          <span class="section-label reveal">Why Propel8</span>
+          <h2 class="section-headline reveal reveal-delay-1" id="why-headline">Why Teams Choose Propel8</h2>
+        </div>
+
+        <div class="why__grid">
+          <article class="why-card reveal">
+            <div class="why-card__number">01</div>
+            <h3 class="why-card__title">Practitioners, Not PowerPoints</h3>
+            <p class="why-card__desc">Our consultants have built production data platforms, not just advised on them. Every recommendation comes from hands-on experience.</p>
+          </article>
+
+          <article class="why-card reveal reveal-delay-1">
+            <div class="why-card__number">02</div>
+            <h3 class="why-card__title">Platform Agnostic, Cost Obsessed</h3>
+            <p class="why-card__desc">We're not paid to push any vendor. We find the right tool — commercial or open-source — for your specific constraints and goals.</p>
+          </article>
+
+          <article class="why-card reveal reveal-delay-2">
+            <div class="why-card__number">03</div>
+            <h3 class="why-card__title">Speed to Value</h3>
+            <p class="why-card__desc">We use proven accelerators, templates, and patterns to compress implementation timelines. Faster time to insight without cutting corners.</p>
+          </article>
+
+          <article class="why-card reveal reveal-delay-3">
+            <div class="why-card__number">04</div>
+            <h3 class="why-card__title">Embedded, Not Extractive</h3>
+            <p class="why-card__desc">We build your team's capabilities alongside the platform. When we leave, your team can own it.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         PROCESS TIMELINE
+    ============================================================ -->
+    <section id="process" aria-labelledby="process-headline">
+      <div class="container">
+        <div class="process__header">
+          <span class="section-label reveal">How We Work</span>
+          <h2 class="section-headline reveal reveal-delay-1" id="process-headline">A Clear Path from Problem to Platform</h2>
+        </div>
+
+        <div class="process__timeline" role="list">
+          <div class="process-step reveal" role="listitem">
+            <div class="process-step__number" aria-hidden="true">01</div>
+            <h3 class="process-step__title">Discover</h3>
+            <p class="process-step__desc">Assess current state, define goals, map data landscape</p>
+          </div>
+
+          <div class="process-step reveal reveal-delay-1" role="listitem">
+            <div class="process-step__number" aria-hidden="true">02</div>
+            <h3 class="process-step__title">Design</h3>
+            <p class="process-step__desc">Architecture blueprints, platform selection, roadmap</p>
+          </div>
+
+          <div class="process-step reveal reveal-delay-2" role="listitem">
+            <div class="process-step__number" aria-hidden="true">03</div>
+            <h3 class="process-step__title">Build</h3>
+            <p class="process-step__desc">Agile delivery sprints, embedded engineers, weekly demos</p>
+          </div>
+
+          <div class="process-step reveal reveal-delay-3" role="listitem">
+            <div class="process-step__number" aria-hidden="true">04</div>
+            <h3 class="process-step__title">Scale</h3>
+            <p class="process-step__desc">Handoff enablement, runbooks, ongoing support options</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         CONTACT / CTA
+    ============================================================ -->
+    <section id="contact" aria-labelledby="contact-headline">
+      <div class="contact__bg-glow" aria-hidden="true"></div>
+      <div class="contact__dotgrid" aria-hidden="true"></div>
+
+      <div class="container">
+        <div class="contact__inner">
+          <div class="contact__left">
+            <h2 class="contact__headline reveal" id="contact-headline">
+              Ready to Propel Your<br>
+              <span class="gradient-text">Data Forward?</span>
+            </h2>
+            <p class="contact__subheadline reveal reveal-delay-1">
+              Whether you're modernizing a legacy warehouse, evaluating Snowflake vs. Databricks,
+              or building your first AI-ready data platform — let's talk.
+            </p>
+
+            <div class="contact__alternatives reveal reveal-delay-2">
+              <a href="mailto:admin@propel8.com" class="contact__alt" aria-label="Email us">
+                <span class="contact__alt-icon" aria-hidden="true">📧</span>
+                <span>admin@propel8.com</span>
+              </a>
+              <a href="#" class="contact__alt" aria-label="Connect on LinkedIn">
+                <span class="contact__alt-icon" aria-hidden="true">💼</span>
+                <span>Connect on LinkedIn</span>
+              </a>
+              <a href="#" class="contact__alt" aria-label="Book a 30-minute intro call">
+                <span class="contact__alt-icon" aria-hidden="true">📅</span>
+                <span>Book a 30-min intro call</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="contact__form reveal reveal-delay-1" role="region" aria-label="Contact form">
+            <form action="mailto:admin@propel8.com" method="POST" enctype="text/plain" aria-label="Contact Propel8">
+              <div class="form__row">
+                <div class="form__group">
+                  <label class="form__label" for="contact-name">Name</label>
+                  <input class="form__input" type="text" id="contact-name" name="name" placeholder="Jane Smith" required autocomplete="name" />
+                </div>
+                <div class="form__group">
+                  <label class="form__label" for="contact-company">Company</label>
+                  <input class="form__input" type="text" id="contact-company" name="company" placeholder="Acme Corp" autocomplete="organization" />
+                </div>
+              </div>
+
+              <div class="form__group">
+                <label class="form__label" for="contact-email">Email</label>
+                <input class="form__input" type="email" id="contact-email" name="email" placeholder="jane@acmecorp.com" required autocomplete="email" />
+              </div>
+
+              <div class="form__group">
+                <label class="form__label" for="contact-message">What are you looking to solve?</label>
+                <textarea class="form__textarea" id="contact-message" name="message" rows="4" placeholder="Tell us about your data challenges, goals, or the platform decision you're working through…" required></textarea>
+              </div>
+
+              <button type="submit" class="btn-form-submit">
+                Start the Conversation →
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       FOOTER
+  ============================================================ -->
+  <footer aria-label="Site footer">
+    <div class="container">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <div class="footer__brand__logo">Propel<span>8</span></div>
+          <p class="footer__brand__tagline">Accelerate Your Data Future</p>
+        </div>
+
+        <div>
+          <h3 class="footer__col__title">Services</h3>
+          <ul class="footer__col__links" role="list">
+            <li><a href="#services">Data Platform Modernization</a></li>
+            <li><a href="#services">Open-Source Pipelines</a></li>
+            <li><a href="#services">AI &amp; ML Enablement</a></li>
+            <li><a href="#services">Analytics Engineering</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="footer__col__title">Platforms</h3>
+          <ul class="footer__col__links" role="list">
+            <li><a href="#platforms">Snowflake</a></li>
+            <li><a href="#platforms">Databricks</a></li>
+            <li><a href="#opensource">Open-Source Stack</a></li>
+            <li><a href="#opensource">DataOps</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="footer__col__title">Resources</h3>
+          <ul class="footer__col__links" role="list">
+            <li><a href="#contact">Case Studies</a></li>
+            <li><a href="#contact">Blog</a></li>
+            <li><a href="#contact">Whitepapers</a></li>
+            <li><a href="#contact">Newsletter</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="footer__col__title">Company</h3>
+          <ul class="footer__col__links" role="list">
+            <li><a href="#why">About</a></li>
+            <li><a href="#process">How We Work</a></li>
+            <li><a href="#contact">Careers</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer__bottom">
+        <p class="footer__copyright">© 2025 Propel8 Consulting LLC. All rights reserved.</p>
+        <nav class="footer__legal" aria-label="Legal links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    'use strict';
+
+    /* ============================================================
+       STICKY NAV
+    ============================================================ */
+    const nav = document.getElementById('main-nav');
+
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    /* ============================================================
+       HAMBURGER MENU
+    ============================================================ */
+    const hamburger  = document.getElementById('hamburger');
+    const navOverlay = document.getElementById('nav-overlay');
+    const overlayLinks = navOverlay.querySelectorAll('a');
+
+    function openMenu() {
+      hamburger.classList.add('open');
+      navOverlay.classList.add('open');
+      navOverlay.style.display = 'flex';
+      hamburger.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeMenu() {
+      hamburger.classList.remove('open');
+      navOverlay.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+      // Wait for transition then hide
+      navOverlay.addEventListener('transitionend', () => {
+        if (!navOverlay.classList.contains('open')) {
+          navOverlay.style.display = '';
+        }
+      }, { once: true });
+    }
+
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.contains('open') ? closeMenu() : openMenu();
+    });
+
+    overlayLinks.forEach(link => {
+      link.addEventListener('click', closeMenu);
+    });
+
+    /* ============================================================
+       ACTIVE NAV LINK ON SCROLL
+    ============================================================ */
+    const navLinks  = document.querySelectorAll('.nav__links a');
+    const sections  = document.querySelectorAll('section[id]');
+
+    const navObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          navLinks.forEach(link => {
+            link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+          });
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+
+    sections.forEach(section => navObserver.observe(section));
+
+    /* ============================================================
+       SCROLL REVEAL
+    ============================================================ */
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    /* ============================================================
+       COUNTER ANIMATION
+    ============================================================ */
+    function easeOutExpo(t) {
+      return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+    }
+
+    function animateCounter(el) {
+      const target   = parseFloat(el.dataset.target);
+      const prefix   = el.dataset.prefix  || '';
+      const suffix   = el.dataset.suffix  || '';
+      const duration = 1500;
+      const start    = performance.now();
+
+      function update(now) {
+        const elapsed  = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const value    = Math.floor(easeOutExpo(progress) * target);
+        el.textContent = prefix + value + suffix;
+        if (progress < 1) requestAnimationFrame(update);
+        else el.textContent = prefix + target + suffix;
+      }
+
+      requestAnimationFrame(update);
+    }
+
+    const statsSection  = document.getElementById('stats');
+    const counterEls    = document.querySelectorAll('.stat-item__number[data-target]');
+    let countersStarted = false;
+
+    const statsObserver = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && !countersStarted) {
+        countersStarted = true;
+        counterEls.forEach(animateCounter);
+        statsObserver.unobserve(statsSection);
+      }
+    }, { threshold: 0.3 });
+
+    statsObserver.observe(statsSection);
+
+    /* ============================================================
+       SVG NODE PULSE (CSS handles animation via keyframes)
+       Ensure SVG flow lines have correct stroke-dasharray length
+    ============================================================ */
+    document.querySelectorAll('.svg-flow-line').forEach((line, i) => {
+      const len = line.getTotalLength ? Math.ceil(line.getTotalLength()) : 120;
+      line.style.strokeDasharray  = len;
+      line.style.strokeDashoffset = len;
+      line.style.animationDelay   = (i * 0.45) + 's';
+    });
+  </script>
+
+</body>
+</html>
