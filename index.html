@@ -1223,6 +1223,46 @@
       box-shadow: 0 6px 20px rgba(0, 229, 195, 0.3);
     }
 
+    .form__thankyou {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 3rem 1.5rem;
+      gap: 1rem;
+    }
+
+    .form__thankyou.visible { display: flex; }
+
+    .form__thankyou-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--gradient-hero);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+
+    .form__thankyou-title {
+      font-family: var(--font-heading);
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 0;
+    }
+
+    .form__thankyou-body {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin: 0;
+      max-width: 28ch;
+    }
+
     @media (max-width: 900px) {
       .contact__inner { grid-template-columns: 1fr; gap: 3rem; }
     }
@@ -1833,7 +1873,7 @@
           </div>
 
           <div class="contact__form reveal reveal-delay-1" role="region" aria-label="Contact form">
-            <form action="mailto:admin@propel8.com" method="POST" enctype="text/plain" aria-label="Contact Propel8">
+            <form id="contact-form" aria-label="Contact Propel8">
               <div class="form__row">
                 <div class="form__group">
                   <label class="form__label" for="contact-name">Name</label>
@@ -1859,6 +1899,11 @@
                 Start the Conversation →
               </button>
             </form>
+            <div id="form-thankyou" class="form__thankyou" role="status" aria-live="polite">
+              <div class="form__thankyou-icon" aria-hidden="true">✓</div>
+              <p class="form__thankyou-title">Message sent — we'll be in touch soon.</p>
+              <p class="form__thankyou-body">Thanks for reaching out. Expect a reply within one business day.</p>
+            </div>
           </div>
         </div>
       </div>
@@ -2050,6 +2095,30 @@
       line.style.strokeDasharray  = len;
       line.style.strokeDashoffset = len;
       line.style.animationDelay   = (i * 0.45) + 's';
+    });
+
+    /* ============================================================
+       CONTACT FORM — mailto via JS (avoids browser insecure-POST warning)
+    ============================================================ */
+    document.getElementById('contact-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const name    = document.getElementById('contact-name').value.trim();
+      const company = document.getElementById('contact-company').value.trim();
+      const email   = document.getElementById('contact-email').value.trim();
+      const message = document.getElementById('contact-message').value.trim();
+
+      const subject = encodeURIComponent('Propel8 Enquiry from ' + name + (company ? ' (' + company + ')' : ''));
+      const body    = encodeURIComponent(
+        'Name: ' + name + '\n' +
+        (company ? 'Company: ' + company + '\n' : '') +
+        'Email: ' + email + '\n\n' +
+        message
+      );
+
+      window.location.href = 'mailto:admin@propel8.com?subject=' + subject + '&body=' + body;
+
+      document.getElementById('contact-form').style.display = 'none';
+      document.getElementById('form-thankyou').classList.add('visible');
     });
   </script>
 
