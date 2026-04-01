@@ -1355,6 +1355,14 @@
 
     .footer__legal a:hover { color: var(--text-primary); }
 
+    .footer__version {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      opacity: 0.5;
+      font-family: var(--font-body);
+      letter-spacing: 0.04em;
+    }
+
     @media (max-width: 1024px) {
       .footer__top { grid-template-columns: 1fr 1fr; }
     }
@@ -1960,7 +1968,8 @@
       </div>
 
       <div class="footer__bottom">
-        <p class="footer__copyright">© 2026 Propel8 Consulting. All rights reserved.</p>        
+        <p class="footer__copyright">© 2026 Propel8 Consulting. All rights reserved.</p>
+        <span class="footer__version">v1.0.3</span>
       </div>
     </div>
   </footer>
