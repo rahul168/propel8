@@ -32,7 +32,7 @@ npx serve .
    git init
    git add index.html README.md
    git commit -m "Initial Propel8 SPA"
-   git remote add origin https://github.com/<username>/<repo-name>.git
+   git remote add origin https://github.com/rahul168/propel8.git
    git push -u origin main
    ```
 
@@ -44,11 +44,11 @@ npx serve .
 
 5. Your site will be live at:
    ```
-   https://<username>.github.io/<repo-name>/
+   https://rahul168.github.io/propel8/
    ```
 
 ---
 
 ## Contact
 
-hello@propel8.io
+admin@propel8.com
